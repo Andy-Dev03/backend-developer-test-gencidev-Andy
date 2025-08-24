@@ -5,6 +5,7 @@ class NoteController {
     try {
       const notes = await Note.findAll({
         where: { UserId: req.user.id },
+        order: [["id", "ASC"]],
       });
 
       res.status(200).json({
@@ -56,7 +57,33 @@ class NoteController {
     }
   }
 
-  static async updateNote(req, res, next) {}
+  static async updateNote(req, res, next) {
+    try {
+      const { id } = req.params;
+      const { title, content } = req.body;
+
+      const note = await Note.findOne({
+        where: { id: +id, UserId: req.user.id },
+      });
+
+      if (!note) {
+        throw new Error("Note_Not_Found");
+      }
+
+      await note.update({
+        title,
+        content,
+      });
+
+      res.status(200).json({
+        statusCode: 200,
+        message: "Note updated successfully",
+        data: note,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 
   static async deleteNote(req, res, next) {}
 }
