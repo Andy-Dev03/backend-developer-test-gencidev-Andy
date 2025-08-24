@@ -6,20 +6,22 @@ const isError = (err, _req, res, _next) => {
 
   if (err.name === "SequelizeValidationError") {
     statusError = 400;
-  } else if (err.name === "SequelizeUniqueConstraintError") {
+  } else if (err.message === "SequelizeUniqueConstraintError") {
     statusError = 400;
     messageError = err.errors[0].message;
-  } else if (err.name === "EmptyEmail") {
+  } else if (err.message === "EmptyEmail") {
     statusError = 400;
     messageError = "Email is required";
-  } else if (err.name === "EmptyPassword") {
+  } else if (err.message === "EmptyPassword") {
     statusError = 400;
     messageError = "Password is required";
-  } else if (err.name === "InvalidUser") {
+  } else if (err.message === "InvalidUser") {
     statusError = 401;
     messageError = "Invalid email or password";
+  } else if (err.message === "Note_Not_Found") {
+    statusError = 404;
+    messageError = "Note not found";
   }
-
   res.status(statusError).json({
     statusCode: statusError,
     error: {

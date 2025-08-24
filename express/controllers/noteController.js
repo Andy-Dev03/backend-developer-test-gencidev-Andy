@@ -9,7 +9,7 @@ class NoteController {
 
       res.status(200).json({
         statusCode: 200,
-        totalData: notes.length,
+        totalData: +notes.length,
         data: notes,
       });
     } catch (err) {
@@ -17,7 +17,23 @@ class NoteController {
     }
   }
 
-  static async getNoteById(req, res, next) {}
+  static async getNoteById(req, res, next) {
+    try {
+      const { id } = req.params;
+      const note = await Note.findByPk(+id);
+
+      if (!note) {
+        throw new Error("Note_Not_Found");
+      }
+
+      res.status(200).json({
+        statusCode: 200,
+        data: note,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 
   static async createNote(req, res, next) {
     try {
@@ -29,6 +45,7 @@ class NoteController {
         content,
         UserId: currentUser,
       });
+
       res.status(201).json({
         statusCode: 201,
         message: "Note created successfully",
