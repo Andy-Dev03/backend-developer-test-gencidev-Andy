@@ -15,7 +15,7 @@ const authentication = async (req, _res, next) => {
 
     if (!user) throw new Error("Unauthentication");
 
-    req.newData = {
+    req.user = {
       id: user.id,
     };
 
