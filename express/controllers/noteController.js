@@ -1,16 +1,17 @@
 const { Note } = require("../models");
 
 class NoteController {
-  static async getAllNotes(req, res, next) {
+  // Get all notes
+  static async getAllNotes(_req, res, next) {
     try {
       const notes = await Note.findAll({
-        where: { UserId: req.user.id },
         order: [["id", "ASC"]],
       });
 
       res.status(200).json({
         statusCode: 200,
-        totalData: +notes.length,
+        message: "Notes fetched successfully",
+        totalData: notes.length,
         data: notes,
       });
     } catch (err) {
@@ -18,6 +19,7 @@ class NoteController {
     }
   }
 
+  // Get note by ID
   static async getNoteById(req, res, next) {
     try {
       const { id } = req.params;
@@ -29,6 +31,7 @@ class NoteController {
 
       res.status(200).json({
         statusCode: 200,
+        message: "Note fetched successfully",
         data: note,
       });
     } catch (err) {
@@ -36,6 +39,7 @@ class NoteController {
     }
   }
 
+  // Create a new note
   static async createNote(req, res, next) {
     try {
       const { title, content } = req.body;
@@ -57,14 +61,13 @@ class NoteController {
     }
   }
 
+  // Update a note
   static async updateNote(req, res, next) {
     try {
       const { id } = req.params;
       const { title, content } = req.body;
 
-      const note = await Note.findOne({
-        where: { id: +id, UserId: req.user.id },
-      });
+      const note = await Note.findByPk(+id);
 
       if (!note) {
         throw new Error("Note_Not_Found");
@@ -85,7 +88,27 @@ class NoteController {
     }
   }
 
-  static async deleteNote(req, res, next) {}
+  // Delete a note
+  static async deleteNote(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const note = await Note.findByPk(+id);
+
+      if (!note) {
+        throw new Error("Note_Not_Found");
+      }
+
+      await note.destroy();
+
+      res.status(200).json({
+        statusCode: 200,
+        message: "Note deleted successfully",
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = NoteController;

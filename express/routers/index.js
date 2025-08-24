@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authRouter = require("./authRouter");
 const noteRouter = require("./noteRouter");
-const authentication = require("../middlewares/middleware");
+const { authentication } = require("../middlewares/middleware");
 
 router.use("/auth", authRouter);
 

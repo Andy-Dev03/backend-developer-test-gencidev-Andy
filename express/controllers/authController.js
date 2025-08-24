@@ -12,6 +12,7 @@ class AuthController {
 
       res.status(201).json({
         statusCode: 201,
+        message: "Registered successfully",
         data: {
           id: newUser.id,
           name: newUser.name,
@@ -46,6 +47,7 @@ class AuthController {
 
       res.status(200).json({
         statusCode: 200,
+        message: "Login successful",
         access_token: token,
       });
     } catch (err) {

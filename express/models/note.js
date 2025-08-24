@@ -16,9 +16,48 @@ module.exports = (sequelize, DataTypes) => {
   }
   Note.init(
     {
-      title: DataTypes.STRING,
-      content: DataTypes.STRING,
-      UserId: DataTypes.INTEGER,
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            args: true,
+            msg: "Title is required",
+          },
+          notEmpty: {
+            args: true,
+            msg: "Title is required",
+          },
+        },
+      },
+      content: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            args: true,
+            msg: "Content is required",
+          },
+          notEmpty: {
+            args: true,
+            msg: "Content is required",
+          },
+        },
+      },
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notNull: {
+            args: true,
+            msg: "User is required",
+          },
+          notEmpty: {
+            args: true,
+            msg: "User is required",
+          },
+        },
+      },
     },
     {
       sequelize,
