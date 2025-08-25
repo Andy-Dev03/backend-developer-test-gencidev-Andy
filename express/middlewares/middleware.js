@@ -5,15 +5,15 @@ const { verifyToken } = require("../utils/jwt");
 const authentication = async (req, _res, next) => {
   try {
     const { authorization } = req.headers;
-    if (!authorization) throw new Error("Unauthentication");
+    if (!authorization) throw new Error("Unauthorized");
 
     const token = authorization.split(" ")[1];
-    if (!token) throw new Error("Unauthentication");
+    if (!token) throw new Error("Unauthorized");
 
     const payload = verifyToken(token);
     const user = await User.findByPk(+payload.id);
 
-    if (!user) throw new Error("Unauthentication");
+    if (!user) throw new Error("Unauthorized");
 
     req.user = {
       id: user.id,

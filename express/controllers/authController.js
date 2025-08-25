@@ -6,16 +6,16 @@ class AuthController {
   // Register a new user
   static async register(req, res, next) {
     try {
-      const { name, email, password } = req.body;
+      const { username, email, password } = req.body;
 
-      const newUser = await User.create({ name, email, password });
+      const newUser = await User.create({ username, email, password });
 
       res.status(201).json({
         statusCode: 201,
         message: "Registered successfully",
         data: {
           id: newUser.id,
-          name: newUser.name,
+          username: newUser.username,
           email: newUser.email,
         },
       });
@@ -32,15 +32,23 @@ class AuthController {
       if (!email) throw new Error("EmptyEmail");
       if (!password) throw new Error("EmptyPassword");
 
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) throw new Error("InvalidEmailFormat");
+
       const user = await User.findOne({ where: { email } });
-      const validPassword = comparePassword(password, user?.password);
+
+      if (!user) {
+        throw new Error("InvalidUser");
+      }
+
+      const validPassword = comparePassword(password, user.password);
       if (!user || !validPassword) {
         throw new Error("InvalidUser");
       }
 
       const payload = {
         id: user.id,
-        name: user.name,
+        username: user.username,
       };
 
       const token = generateToken(payload);
@@ -48,7 +56,9 @@ class AuthController {
       res.status(200).json({
         statusCode: 200,
         message: "Login successful",
-        access_token: token,
+        data: {
+          access_token: token,
+        },
       });
     } catch (err) {
       next(err);

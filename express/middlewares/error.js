@@ -6,7 +6,9 @@ const isError = (err, _req, res, _next) => {
 
   if (err.name === "SequelizeValidationError") {
     statusError = 400;
-    messageError = err.errors[0].message;
+    messageError = err.errors.map((e) => {
+      return e.message;
+    });
   } else if (err.name === "SequelizeUniqueConstraintError") {
     statusError = 400;
     messageError = err.errors[0].message;
@@ -16,15 +18,18 @@ const isError = (err, _req, res, _next) => {
   } else if (err.message === "EmptyPassword") {
     statusError = 400;
     messageError = "Password is required";
+  } else if (err.message === "InvalidEmailFormat") {
+    statusError = 400;
+    messageError = "Invalid email format";
   } else if (err.message === "InvalidUser") {
     statusError = 401;
     messageError = "Invalid email or password";
-  } else if (err.message === "Unauthentication") {
+  } else if (err.message === "Unauthorized") {
     statusError = 401;
-    messageError = "You need to login first";
+    messageError = "Access token is required";
   } else if (err.name === "JsonWebTokenError") {
     statusError = 401;
-    messageError = "Invalid token";
+    messageError = "Access token is invalid";
   } else if (err.name === "TokenExpiredError") {
     statusError = 401;
     messageError = "Your token is expired";
