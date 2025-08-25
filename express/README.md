@@ -1,6 +1,6 @@
 # Documentation API
 
-## Endpoint - Auth:
+# Endpoint - Auth:
 
 ## 1. POST /api/auth/register
 
@@ -127,7 +127,9 @@ _Response (401 - Unauthorized)_
 
 &nbsp;
 
-## 3. POST /api/notes
+# Endpoint - Notes:
+
+## 1. POST /api/notes
 
 Description:
 
@@ -192,20 +194,9 @@ OR WITH MANY VALIDATION
 }
 ```
 
-_Response (401 - Unauthorized)_
-
-```json
-{
-  "statusCode": 401,
-  "error": {
-    "message": "Access token is invalid"
-  }
-}
-```
-
 &nbsp;
 
-## 4. GET /api/notes
+## 2. GET /api/notes
 
 Description:
 
@@ -252,7 +243,7 @@ _Response (200 - OK)_
 
 &nbsp;
 
-## 5. GET /api/notes/:id
+## 3. GET /api/notes/:id
 
 Description:
 
@@ -306,7 +297,7 @@ _Response (404 - Not Found)_
 
 &nbsp;
 
-## 6. PUT /api/notes/:id
+## 4. PUT /api/notes/:id
 
 Description:
 
@@ -379,17 +370,6 @@ OR WITH MANY VALIDATION
 }
 ```
 
-_Response (401 - Unauthorized)_
-
-```json
-{
-  "statusCode": 401,
-  "error": {
-    "message": "Access token is invalid"
-  }
-}
-```
-
 _Response (403 - Forbidden)_
 
 ```json
@@ -414,7 +394,7 @@ _Response (404 - Not Found)_
 
 &nbsp;
 
-## 7. DELETE /api/notes/:id
+## 5. DELETE /api/notes/:id
 
 Description:
 
@@ -450,12 +430,7 @@ _Response (200 - OK)_
 _Response (401 - Unauthorized)_
 
 ```json
-{
-  "statusCode": 401,
-  "error": {
-    "message": "Access token is invalid"
-  }
-}
+
 ```
 
 _Response (403 - Forbidden)_
@@ -482,7 +457,9 @@ _Response (404 - Not Found)_
 
 &nbsp;
 
-## Global Error
+# Global Error
+
+## Notes
 
 _Response (401 - Unauthorized)_
 
@@ -497,10 +474,21 @@ OR
 {
   "statusCode": 401,
   "error": {
+    "message": "Access token is invalid"
+  }
+}
+OR
+{
+  "statusCode": 401,
+  "error": {
     "message": "Your token is expired"
   }
 }
 ```
+
+&nbsp;
+
+## All Endpoint
 
 _Response (500 - Internal Server Error)_
 
